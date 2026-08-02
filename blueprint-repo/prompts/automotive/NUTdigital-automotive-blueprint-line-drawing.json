@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "task": "convert source image to technical blueprint line drawing",
+  "fidelity": {
+    "overlay": "1:1 pixel-perfect match with source at 100% scale",
+    "preserve": ["camera angle", "foreshortening", "vanishing points", "left/right orientation"],
+    "prohibit": ["scaling", "warping", "cropping", "flipping", "mirroring", "rotating", "perspective shift"]
+  },
+  "palette": {
+    "lines": "#000000",
+    "background": "#ffffff",
+    "fills": "none except car_shadow"
+  },
+  "line_weights": {
+    "vehicle_body": "2.5–4pt uniform",
+    "track_elements": "100% black, very long stroke taper",
+    "motion_lines": "0.5–1pt"
+  },
+  "vehicle": {
+    "trace": ["body panels", "wheel arches", "windows", "bumpers", "trim", "lights"],
+    "exclude": ["letters", "numbers", "logos", "decals", "sponsor graphics", "text"],
+    "geometry": "static — motion is additive overlay only"
+  },
+  "lights": {
+    "trace": "all visible housings and internal elements exactly as source",
+    "projector_lenses": "outline + inner detail rings",
+    "led_arrays": "precise geometric lines",
+    "rule": "replicate exact arrangement — no simplification, no invention"
+  },
+  "wheels": {
+    "critical": "wheels must read as spinning at high speed — NOT parked, NOT static",
+    "hub_zone": {
+      "radius": "inner 30%",
+      "style": "crisp solid black circle",
+      "detail": "minimal — stable anchor point"
+    },
+    "mid_zone": {
+      "radius": "30–70%",
+      "style": "6–8 short radial stubs only",
+      "prohibit": ["full spokes", "complete spoke lines", "static wheel detail"],
+      "intent": "suggest interrupted rotation — stubs break before reaching rim"
+    },
+    "outer_zone": {
+      "radius": "70–100%",
+      "style": "tire boundary outline only",
+      "prohibit": ["spoke lines", "rim detail", "static patterns"]
+    },
+    "motion_trail": {
+      "lines": "3–5 curved arcs, 0.5pt",
+      "anchor": "rear tire edge",
+      "extension": "max 2mm beyond tire",
+      "taper": "follow rotation arc, thin to 0pt — not cartoonish"
+    },
+    "render_check": "if wheel looks like a parked car wheel — redo. hub crisp, everything outside hub zone blurred or absent"
+  },
+  "speed_lines": {
+    "count": "max 5",
+    "weight": "0.5pt",
+    "position": "behind or alongside car only",
+    "taper": "to 0pt quickly",
+    "constraint": "never overlap vehicle body"
+  },
+  "intakes": {
+    "style": "uniform open mesh — intersecting lines, 0.5–1pt",
+    "background_visible": true,
+    "consistency": "identical pattern front and side",
+    "prohibit": ["solid black fills", "thick checkerboard", "floating voids"]
+  },
+  "shadow": {
+    "type": "solid black silhouette",
+    "fill": "#000000",
+    "gaps": "none — expand shape to close all white gaps at contact points",
+    "note": "only permitted solid fill in entire drawing"
+  },
+  "track": {
+    "opacity": "100% — no transparency",
+    "taper": "very gradual over final 20–30% of line length to 0pt",
+    "margin": "all lines vanish completely inside canvas — clear white border all sides",
+    "include": "road surface and curbing beneath and immediately around vehicle only",
+    "exclude": ["text", "signage", "branding", "micro-texture"]
+  },
+  "background": {
+    "render": "none",
+    "prohibit": ["trees", "foliage", "walls", "barriers", "grandstands", "sky", "buildings", "fencing", "trackside structures"],
+    "rule": "everything behind and above the vehicle contact plane is white — no exceptions",
+    "render_check": "if anything other than car + track surface + shadow is visible — remove it"
+  },
+  "global_prohibit": [
+    "color of any kind",
+    "text, numbers, logos anywhere",
+    "shading or gradients",
+    "solid fills except car_shadow",
+    "lines touching frame border",
+    "white gaps between shadow and contact lines",
+    "abrupt line cuts — taper only"
+  ],
+  "render_checks": [
+    "vehicle overlays 1:1 on source — zero drift",
+    "intakes show white through mesh — not solid black",
+    "shadow gapless solid silhouette",
+    "track lines fade smoothly — white margin visible all sides",
+    "wheels read as spinning — not parked",
+    "no text or branding anywhere",
+    "pure #000000 at 400% zoom — no gray halos",
+    "background fully white — no environment elements"
+  ]
+}
